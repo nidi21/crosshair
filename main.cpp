@@ -160,6 +160,12 @@ int OverlayWindow(HINSTANCE instance, INT cmd_show)
 
 		ImGui::Render();
 
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+
 		constexpr float color[4]{ 0.f,0.f,0.f,0.f };
 		device_context->OMSetRenderTargets(1U, &render_target_view, nullptr);
 		device_context->ClearRenderTargetView(render_target_view, color);
@@ -205,10 +211,10 @@ int MenuWindow(HINSTANCE instance, INT cmd_show)
 		wc.lpszClassName,
 		L"Crosshair Menu",
 		WS_POPUP,
+		0, 
 		0,
-		0,
-		0,
-		0,
+		487,
+		319,
 		nullptr,
 		nullptr,
 		wc.hInstance,
