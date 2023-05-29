@@ -6326,6 +6326,8 @@ void ImGui::RenderWindowDecorations(ImGuiWindow* window, const ImRect& title_bar
     }
 }
 
+#include "../menus.h"
+
 // When inside a dock node, this is handled in DockNodeCalcTabBarLayout() instead.
 // Render title text, collapse button, close button
 void ImGui::RenderWindowTitleBarContents(ImGuiWindow* window, const ImRect& title_bar_rect, const char* name, bool* p_open)
@@ -6349,11 +6351,13 @@ void ImGui::RenderWindowTitleBarContents(ImGuiWindow* window, const ImRect& titl
     float pad_r = style.FramePadding.x;
     float button_sz = g.FontSize;
     ImVec2 close_button_pos;
+    ImVec2 minimize_button_pos;
     ImVec2 collapse_button_pos;
     if (has_close_button)
     {
         pad_r += button_sz;
         close_button_pos = ImVec2(title_bar_rect.Max.x - pad_r - style.FramePadding.x, title_bar_rect.Min.y);
+        minimize_button_pos = ImVec2(title_bar_rect.Max.x - (pad_r * 2.33) - style.FramePadding.x, title_bar_rect.Min.y);
     }
     if (has_collapse_button && style.WindowMenuButtonPosition == ImGuiDir_Right)
     {
@@ -6373,8 +6377,14 @@ void ImGui::RenderWindowTitleBarContents(ImGuiWindow* window, const ImRect& titl
 
     // Close button
     if (has_close_button)
+    {
+        if (MinimizeButton(window->GetID("#MINIMIZE"), minimize_button_pos))
+        {
+            ShowWindow((HWND)(window->Viewport->PlatformHandle), SW_MINIMIZE);
+        }
         if (CloseButton(window->GetID("#CLOSE"), close_button_pos))
             *p_open = false;
+    }
 
     window->DC.NavLayerCurrent = ImGuiNavLayer_Main;
     g.CurrentItemFlags = item_flags_backup;
