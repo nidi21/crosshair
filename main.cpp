@@ -242,6 +242,7 @@ int MenuWindow(HINSTANCE instance, INT cmd_show)
 		DwmExtendFrameIntoClientArea(window, &margins);
 	}
 
+
 	DXGI_SWAP_CHAIN_DESC sd{};
 	sd.BufferDesc.RefreshRate.Numerator = 60U;
 	sd.BufferDesc.RefreshRate.Denominator = 1U;
@@ -294,7 +295,7 @@ int MenuWindow(HINSTANCE instance, INT cmd_show)
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(device, device_context);
 
-	Menu::Init ();
+	Menu::Init();
 
 
 	while (Global::running)
